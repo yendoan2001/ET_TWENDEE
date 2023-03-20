@@ -5,8 +5,9 @@ export const fetchUsers = createAsyncThunk(
   "users/fetch",
   async ({ page, take }: { page: number; take: number }, thunkAPI) => {
     const response = await apiClient.get("", {
-      params: { page, results: take },
+      params: { page: page, results: take },
     });
+    console.log('response',response)
 
     return response.data;
   }
@@ -25,7 +26,9 @@ const initialState = {
 export const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    // standard reducer logic, with auto-generated action types per reducer
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.pending, (state, action) => {
       state.loading = true;
@@ -37,7 +40,6 @@ export const userSlice = createSlice({
           a.login.username.localeCompare(b.login.username) ||
           a.name.first.localeCompare(b.name.first)
       );
-
       state.loading = false;
     });
   },
